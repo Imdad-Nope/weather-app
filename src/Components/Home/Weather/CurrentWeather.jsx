@@ -2,8 +2,11 @@ import { useState } from "react";
 
 const CurrentWeather = () => {
   const [searchCity, setSearchCity] = useState('')
-  const [weatherData, setWeatherData] = useState([])
+  const [weatherData, setWeatherData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+
+
+  const API_KEY = '768ac710a8f04d7a9156dd48019977b5'
 
   // Change input field's text
 
@@ -14,12 +17,19 @@ const CurrentWeather = () => {
   // Search Data
 
   const handleSearch = () =>{
+    if(searchCity.trim() !==''){
+
+    
     setIsLoading(true)
-    const url = `https://api.weatherbit.io/v2.0/current?&city=${searchCity}&key=768ac710a8f04d7a9156dd48019977b5`
+
+    // const url = `https://api.weatherbit.io/v2.0/current?&city=${searchCity}&key=768ac710a8f04d7a9156dd48019977b5`
+
+    const url= `https://api.weatherbit.io/v2.0/forecast/daily?city=${searchCity}&key=${API_KEY}`
+    console.log(searchCity);
     fetch(url)
     .then(res=> res.json())
     .then(data=>{
-      setWeatherData(data.data[0]);
+      setWeatherData(data.data);
       setIsLoading(false)
       console.log(data);
     })
@@ -28,7 +38,10 @@ const CurrentWeather = () => {
       setIsLoading(false); 
     });
   }
+}
   console.log(weatherData);
+
+
     return (
   <div>
            <form className="mt-4 w-25 mx-auto d-flex justify-content-center align-items-center mt-5">
@@ -41,28 +54,47 @@ const CurrentWeather = () => {
               <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" />
             </div>
 
-                {/* Spinner is used here */}
-            <div>
-                {
-                  isLoading && <div className="d-flex justify-content-center">
-                  <div className="spinner-border text-info" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
-                </div>
-                }
-            </div>
-
-      {
-        searchCity &&
+         <div>
+         {
+         isLoading ? (
+        <div className="text-center mt-3">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : weatherData ? (
         <div className="text-center">
-                <h2>{weatherData.city_name}</h2>
-                <p>{weatherData.app_temp} <span>&deg;</span></p>
-                <p>Clouds: {weatherData.weather?.description}</p>
+
+        <h3>{searchCity}</h3>
+        <p>Temperaure: {weatherData[0]?.temp}</p>
+        <p>cloud: {weatherData[0].weather?.description}</p>
+
+        {/* Forecast */}
+        
+        <h2>Next Few days Forecase</h2>
+
+        {
+          weatherData.slice(1, 6).map((day)=>(
+            <div key={day.ts}>
+              <h4>Date:</h4>
+              <p>Temperature: </p>
+              <p>Cloud: </p>
             </div>
-        }    
+          ))}
+        </div>
+      )
+      : (
+        <p>Enter a location to show data</p>
+      )
+      
+      }
+           
+</div>
+        
     </div>
 
     );
 };
 
 export default CurrentWeather;
+
