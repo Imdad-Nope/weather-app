@@ -1,7 +1,6 @@
 
 const Forecast = ({day}) => {
-    const {valid_date, temp, app_max_temp
-    } = day;
+    const {valid_date, temp, app_max_temp} = day;
     return (
         <div className="container mx-auto mt-2">
          <table className="table table-success table-striped">
