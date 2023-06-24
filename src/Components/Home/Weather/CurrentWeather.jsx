@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Forecast from "../Forecast/Forecast";
 
 const CurrentWeather = () => {
   const [searchCity, setSearchCity] = useState('')
@@ -44,7 +45,7 @@ const CurrentWeather = () => {
 
     return (
   <div>
-           <form className="mt-4 w-25 mx-auto d-flex justify-content-center align-items-center mt-5">
+           <form className="mt-4 w-25 mx-auto d-flex justify-content-center align-items-center mt-5" >
                 <input onChange={handleOnChange} value={searchCity} type="text" className="form-control" id="exampleFormControlInput1" placeholder="Search your city.." />
               <div>
               <button onClick={handleSearch} type="button" className="btn btn-info">Search</button>
@@ -70,16 +71,14 @@ const CurrentWeather = () => {
         <p>cloud: {weatherData[0].weather?.description}</p>
 
         {/* Forecast */}
-        
+
         <h2>Next Few days Forecase</h2>
 
         {
           weatherData.slice(1, 6).map((day)=>(
-            <div key={day.ts}>
-              <h4>Date:</h4>
-              <p>Temperature: </p>
-              <p>Cloud: </p>
-            </div>
+           <Forecast key={day.ts} day={day}>
+          
+           </Forecast>
           ))}
         </div>
       )
