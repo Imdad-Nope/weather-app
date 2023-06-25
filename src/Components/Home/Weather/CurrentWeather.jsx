@@ -27,7 +27,7 @@ const CurrentWeather = () => {
     fetch(url)
     .then(res=> res.json())
     .then(data=>{
-      if(data.data && data.data?.length > 0){
+      if(data.data && data.data.length > 0){
         setWeatherData(data.data);
         setIsLoading(false)
       }
@@ -35,7 +35,7 @@ const CurrentWeather = () => {
         setError('City not found')
         setIsLoading(false)
       }
-      console.log(data);
+      // console.log(data);
     })
     .catch(error => {
       console.error('Error', error);
@@ -52,17 +52,28 @@ const CurrentWeather = () => {
     }
   }
 
-  console.log(weatherData);
-
-
+  // console.log(weatherData);
     return (
-  <div>
-           <form className="mt-4 w-25 mx-auto d-flex justify-content-center align-items-center mt-5" >
-                <input onChange={handleOnChange} value={searchCity} onKeyDown={handleEnterBtn} type="text" className="form-control" id="exampleFormControlInput1" placeholder="Search your city.." />
-              <div>
-              <button onClick={handleSearch} type="button" className="btn btn-info">Search</button>
+  <div className="container mt-3">
+      <div className="text-left text-info">
+        <h5>Weather App</h5>
+        </div>
+        <form 
+       className="w-50
+        mx-auto 
+        d-flex 
+        justify-content-center 
+        align-items-center">
+                <div>
+                <input onChange={handleOnChange} value={searchCity} onKeyDown={handleEnterBtn} type="text"  className="form-control form-group" id="exampleFormControlInput1" placeholder="Search your city.." />
+                </div>
+              <div >
+                <button 
+                onClick={handleSearch} type="button" className="btn btn-info">Search</button>
               </div>
-            </form>
+        </form>
+
+            {/* Cloud Image */}
             <div className="text-center mt-3">
               <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="" />
             </div>
@@ -70,8 +81,8 @@ const CurrentWeather = () => {
       <div>
          {
          isLoading ? (
-        <div className="text-center mt-3">
-          <div className="spinner-border" role="status">
+        <div className="text-center">
+          <div className="spinner-border text-info" role="status">
             <span className="visually-hidden">Loading...</span>
           </div>
         </div>
@@ -83,23 +94,24 @@ const CurrentWeather = () => {
         <div className="text-center">
 
         <h3 className="text-white">{searchCity}</h3>
-        <h5 className="text-white my-3">Temperature: <span className="text-info-emphasis">{weatherData[0]?.temp}</span><span className="text-warning-emphasis">&deg;C</span></h5>
-        <h6 className="text-light">Cloud: <span className="text-danger-emphasis">{weatherData[0].weather?.description}</span></h6>
+        <h5 className="text-white my-3">Today's Temperature: <span className="text-info-emphasis">{weatherData[0]?.temp}</span><span className="text-warning-emphasis">&deg;C</span></h5>
+        <h6 className="text-white">Cloud: <span className="text-danger-emphasis">{weatherData[0].weather?.description}</span></h6>
 
-          {/* Forecast */}
+          {/* Next Few days Forecast */}
 
-        <h2 className="text-white mt-5">Next Few days <span className="text-warning">Forecast</span></h2>
-        <div className="text-warning container">
+        <h2 className="text-white mt-5">Next Few days <span className="text-info">Forecast</span></h2>
+        <div className="text-info container w-50">
         <hr />
         </div>
+
         {
-          weatherData.slice(0, 5).map((day)=>(
+          weatherData.slice(1, 5).map((day)=>(
            <Forecast key={day.ts} day={day} />
           ))}
         </div>)
       : (
        <div className="text-center text-warning">
-         <h3>Enter your City Name to show your forecast...</h3>
+         <h3>Enter your City Name to show current weather and next few days forecast...</h3>
        </div>
       )
       
