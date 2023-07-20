@@ -7,8 +7,12 @@ const CurrentWeather = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  // Api Key
-  const API_KEY = '768ac710a8f04d7a9156dd48019977b5'
+  // Previous Api Key
+  // const API_KEY = '768ac710a8f04d7a9156dd48019977b5'
+
+  // New Api Key
+
+  const API_KEY = '9243cb13e87044afae010d566d7378c6'
 
   // Change input field's text
 
